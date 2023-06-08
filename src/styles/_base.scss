@@ -1,0 +1,46 @@
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  // background-color: #03010f;
+  background: linear-gradient(45deg, #247BA0 0%, #FFFFB5 100%);
+  background-repeat: no-repeat;
+  font-family: "Inter";
+  height: 100vh;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@font-face {
+  font-family: "FreakyStory";
+  src: local("FreakyStory"), url("/font/FreakyStory.otf") format("truetype");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "light";
+  src: local("light"), url("/font/LucidaConsoleRegular.ttf") format("truetype");
+  font-weight: bold;
+}
+
+.regularfont {
+  font-family: "light" !important;
+}
+
+.sitefont {
+  font-family: "FreakyStory" !important;
+}
+#__next {
+  height: 89%;
+}
