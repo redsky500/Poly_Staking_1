@@ -2,34 +2,33 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { lotteryTableContent } from "../services/nft-collections-service"
 
 const Table = ({ NFTList }: any) => {
   const { address: account }: any = useAccount();
   const [tableRows, setTableRows] = useState([]);
 
   useEffect(() => {
-    lotteryTableContent().then((res: any) => {
-      const tableRowsSetting = res.map((item: any) => {
-        return (
-          <tr
-            key={item._id}
-            className="w-full flex justify-around p-[10px] text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-          >
-            <td className="w-full flex justify-center">
-              <p className="ellipse-para">{item._id}</p>
-            </td>
-            <td className="w-full flex justify-center">
-              <p className="ellipse-para">{item.totalArbkeys}</p>
-            </td>
-            <td className="w-full flex justify-center">
-              <p className="ellipse-para">{item.totalTickets}</p>
-            </td>
-          </tr>
-        );
-      });
-      setTableRows(tableRowsSetting);
-    })
+    // lotteryTableContent().then((res: any) => {
+    //   const tableRowsSetting = res.map((item: any) => {
+    //     return (
+    //       <tr
+    //         key={item._id}
+    //         className="w-full flex justify-around p-[10px] text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+    //       >
+    //         <td className="w-full flex justify-center">
+    //           <p className="ellipse-para">{item._id}</p>
+    //         </td>
+    //         <td className="w-full flex justify-center">
+    //           <p className="ellipse-para">{item.totalArbkeys}</p>
+    //         </td>
+    //         <td className="w-full flex justify-center">
+    //           <p className="ellipse-para">{item.totalTickets}</p>
+    //         </td>
+    //       </tr>
+    //     );
+    //   });
+    //   setTableRows(tableRowsSetting);
+    // })
   }, [NFTList, account, setTableRows]);
 
   return (

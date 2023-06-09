@@ -40,7 +40,7 @@ export default function Footer() {
           </div>
         )}
         <span className="text-white text-[0.8rem]">
-          Copyright 2023. Arbkeys NFT.
+          Copyright 2023. POLY STAKING APP.
         </span>
       </div>
     </footer>

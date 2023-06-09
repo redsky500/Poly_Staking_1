@@ -1,12 +1,13 @@
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  // background-color: #03010f;
-  background: linear-gradient(45deg, #247BA0 0%, #FFFFB5 100%);
+  -moz-osx-font-smoothing: grayscale;  
+  background-image: url("https://w0.peakpx.com/wallpaper/180/292/HD-wallpaper-lion-black-light-lightning.jpg");
   background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   font-family: "Inter";
-  height: 100vh;
+  // height: 100vh;
 }
 
 * {

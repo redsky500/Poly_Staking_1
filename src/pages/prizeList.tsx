@@ -1,7 +1,5 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { getCurrentLotteryById } from "../services/nft-prize-list-service";
-import { getLotteryParticipants } from "../services/participants.-service";
 import SimpleCarousel from "../components/SimpleCarousel";
 import { errorToast } from "../services/toast-service";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
@@ -17,17 +15,17 @@ const PrizeList: NextPage = ({ LOTTERYContract }: any) => {
   }, []);
 
   const initialAsyncFunc = async (payload: any) => {
-    const currentLottery = await getCurrentLotteryById(payload);
-    const participants = await getLotteryParticipants(payload);
-    const utcDate = new Date(currentLottery.utcTimestamp * 1000);
-    const targetDate = new Date(
-      utcDate.toLocaleString("en-US", { timeZone: "America/Los_Angeles" })
-    );
-    const currentMonth = targetDate.toLocaleString("en-US", { month: "short" });
-    const currentDay = targetDate.getDate();
-    setCurrentLotteryDate(`${currentDay || "-"} ${currentMonth || "-"}`);
-    setCurrentLotteryParticipants(participants?.participants?.length || "-");
-    setCurrentLotteryPrize(currentLottery);
+    // const currentLottery = await getCurrentLotteryById(payload);
+    // const participants = await getLotteryParticipants(payload);
+    // const utcDate = new Date(currentLottery.utcTimestamp * 1000);
+    // const targetDate = new Date(
+    //   utcDate.toLocaleString("en-US", { timeZone: "America/Los_Angeles" })
+    // );
+    // const currentMonth = targetDate.toLocaleString("en-US", { month: "short" });
+    // const currentDay = targetDate.getDate();
+    // setCurrentLotteryDate(`${currentDay || "-"} ${currentMonth || "-"}`);
+    // setCurrentLotteryParticipants(participants?.participants?.length || "-");
+    // setCurrentLotteryPrize(currentLottery);
   };
 
   const handlePreviousLottery = () => {
@@ -42,15 +40,15 @@ const PrizeList: NextPage = ({ LOTTERYContract }: any) => {
     }
   };
   const handleNextLottery = async () => {
-    const currentLottery = await getCurrentLotteryById({});
-    const lotteryId = currentLotteryPrize?.lotteryId + 1;
-    if (!currentLottery || lotteryId > currentLottery.lotteryId) {
-      return errorToast("This is the last lottery!");
-    }
-    setCurrentLotteryPrize(null);
-    setCurrentLotteryDate(null);
-    setCurrentLotteryParticipants(null);
-    initialAsyncFunc({ lotteryId: lotteryId });
+    // const currentLottery = await getCurrentLotteryById({});
+    // const lotteryId = currentLotteryPrize?.lotteryId + 1;
+    // if (!currentLottery || lotteryId > currentLottery.lotteryId) {
+    //   return errorToast("This is the last lottery!");
+    // }
+    // setCurrentLotteryPrize(null);
+    // setCurrentLotteryDate(null);
+    // setCurrentLotteryParticipants(null);
+    // initialAsyncFunc({ lotteryId: lotteryId });
   };
 
   return (
@@ -123,7 +121,9 @@ const PrizeList: NextPage = ({ LOTTERYContract }: any) => {
               </label>
             </div>
             <div>
-              <h1 className="font-[800] font-size-20 text-white">{currentLotteryParticipants}</h1>
+              <h1 className="font-[800] font-size-20 text-white">
+                {currentLotteryParticipants}
+              </h1>
             </div>
           </div>
         </div>

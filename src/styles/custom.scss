@@ -32,33 +32,29 @@
   border-width: 1px;
   border-style: solid;
   color: #f7931b;
-  background: linear-gradient( 180deg, #22222287 0%, #2222225c 100% );;
+  background: linear-gradient(180deg, #22222287 0%, #2222225c 100%);
   border-radius: 20px;
   backdrop-filter: blur(7px);
   box-shadow: var(--box-shadow);
 }
 
-.mint-form
-{
+.mint-form {
   background-image: url("/img/Background_image.jpeg");
 }
 
-.mint-image
-{
+.mint-image {
   margin-top: 30px;
-  margin-bottom : 40px;
+  margin-bottom: 40px;
   max-width: 266px;
   margin-right: auto;
 }
 
-.mint-content
-{
-  width : calc(100% - 266px - 24px);
+.mint-content {
+  width: calc(100% - 266px - 24px);
 }
 
-.mint-info
-{
-  display : flex;
+.mint-info {
+  display: flex;
   flex-wrap: wrap;
   gap: 32px 24px;
   position: relative;
