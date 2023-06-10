@@ -2,10 +2,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import {
-  getPrizeList,
-  updateClaimPrize,
-} from "../services/nft-prize-list-service";
 import PrizeCards from "../components/PrizeCards";
 import Loader from "react-spinners/HashLoader";
 import { errorToast } from "../services/toast-service";
@@ -103,7 +99,7 @@ const SimpleCarousel = ({ LOTTERYContract, currentLotteryPrize }: any) => {
         ...updatePrize,
         prizeNFTs: updateClaimItems,
       };
-      await updateClaimPrize(payload);
+      // await updateClaimPrize(payload);
     } else {
       const updateClaimItems = await convertFunc(
         updatePrize,
@@ -114,7 +110,7 @@ const SimpleCarousel = ({ LOTTERYContract, currentLotteryPrize }: any) => {
         ...updatePrize,
         prizeETHs: updateClaimItems,
       };
-      await updateClaimPrize(payload);
+      // await updateClaimPrize(payload);
     }
     prizeList();
   };
@@ -164,7 +160,7 @@ const SimpleCarousel = ({ LOTTERYContract, currentLotteryPrize }: any) => {
         prizeETHs,
         prizeNFTs,
       };
-      updateClaimPrize(payload);
+      // updateClaimPrize(payload);
     });
   };
 
