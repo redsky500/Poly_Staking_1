@@ -4,7 +4,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import Link from "next/link";
 
-const ownerAddress = "0xaFAEc9d7dC633f21a5ef75D61c056C53110E5A5c";
+const ownerAddress = "0xa92FCd2e64f3092B3D47f0fdB1AD209dC06f04b0";
 
 export default function Header() {
   const { address: account } = useAccount();
