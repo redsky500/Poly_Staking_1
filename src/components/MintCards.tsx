@@ -15,6 +15,8 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
       return;
     }
     initialSyncFunc();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setIsStake, account]);
 
   const initialSyncFunc = async () => {
@@ -56,9 +58,16 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
       nonce: undefined,
     })
       .then((res: any) => {
-        successToast("Unstake NFT successfully!");
-        setIsStake(false);
-        setIsProcessing(false);
+        res
+          .wait()
+          .then((item: any) => {
+            successToast("Unstake NFT successfully!");
+            setIsStake(false);
+            setIsProcessing(false);
+          })
+          .catch((err: any) => {
+            successToast("transaction failed!");
+          });
       })
       .catch((err: any) => {
         setIsProcessing(false);
