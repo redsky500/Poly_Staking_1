@@ -6,7 +6,7 @@ import Loader from "react-spinners/HashLoader";
 
 const loader = (
   <div className="flex items-center justify-center w-full">
-    <Loader />
+    <Loader color={"white"} />
   </div>
 );
 const itemsPerPage = 50;
@@ -76,7 +76,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
       {pageLoad ? (
         loader
       ) : (
-        <div className="w-full px-4 sm:px-16 py-8 font-inter text-center text-[20px]">
+        <div className="w-full h-full overflow-auto px-4 sm:px-16 py-8 font-inter text-center text-[20px]">
           <div className="max-w-[1440px] xl:flex flex-col p-10 m-auto mt-0 min-h-[]">
             <div className="flex flex-wrap justify-center items-center xl:w-full gap-[20px] px-[16px]">
               {!userNFTs.length && (

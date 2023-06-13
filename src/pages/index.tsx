@@ -25,7 +25,7 @@ const Home: NextPage = () => {
   const alchemy = new Alchemy(config);
 
   return (
-    <main className="w-full flex items-center">
+    <main className="w-full flex items-center h-[calc(100vh-180px)]">
       <Dashboard
         alchemy={alchemy}
         LOTTERYContract={LOTTERYContract}
