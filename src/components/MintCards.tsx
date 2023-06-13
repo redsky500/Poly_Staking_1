@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { errorToast, successToast } from "../services/toast-service";
 import { gasLimit } from "../config";
+import Loader from "react-spinners/HashLoader";
+
+const loader = (
+  <div className="flex items-center justify-center w-full">
+    <Loader color={"white"} />
+  </div>
+);
 
 const MintCards = ({ userNFT, LOTTERYContract }: any) => {
   const { address: account } = useAccount();
@@ -42,7 +49,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
             setIsProcessing(false);
           })
           .catch((err: any) => {
-            successToast("transaction failed!");
+            errorToast("transaction failed!");
           });
       })
       .catch((err: any) => {
@@ -66,12 +73,12 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
             setIsProcessing(false);
           })
           .catch((err: any) => {
-            successToast("transaction failed!");
+            errorToast("transaction failed!");
           });
       })
       .catch((err: any) => {
         setIsProcessing(false);
-        successToast("Unstake NFT went wrong!");
+        errorToast("Unstake NFT went wrong!");
       });
   };
 
@@ -93,7 +100,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
           onClick={() => (!isStake ? handleStake() : handleUnstake())}
           disabled={isProcessing}
         >
-          {isStake ? "Unstake NFT" : "Stake NFT"}
+          {isProcessing ? loader : isStake ? "Unstake NFT" : "Stake NFT"}
         </button>
       </div>
     </div>

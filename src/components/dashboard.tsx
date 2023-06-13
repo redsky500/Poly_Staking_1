@@ -85,7 +85,11 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                 </span>
               )}
               {paginationNFT.map((mint: any) => (
-                <MintCards key={mint.tokenId} userNFT={mint} LOTTERYContract={LOTTERYContract} />
+                <MintCards
+                  key={mint.tokenId}
+                  userNFT={mint}
+                  LOTTERYContract={LOTTERYContract}
+                />
               ))}
             </div>
             <div>
