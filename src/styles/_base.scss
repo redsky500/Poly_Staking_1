@@ -2,12 +2,12 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  // background-image: url("https://w0.peakpx.com/wallpaper/180/292/HD-wallpaper-lion-black-light-lightning.jpg");
-  // background-repeat: no-repeat;
-  // background-position: 0 -150px;
-  // background-size: cover;
+  background-image: url("../../public/img/poly-staking-background.png");
+  background-repeat: no-repeat;
+  background-position: 100% 23%;
+  background-size: cover;
   font-family: "Inter";
-  background-color: black;
+  // background-color: black;
 }
 
 * {
@@ -51,6 +51,8 @@ body {
 
   background-image: url("../../public/img/poly-stake-image.png");
   background-repeat: no-repeat;
-  background-position: 100% 100%;
-  background-size: auto;
+  // background-position: 100% 100%;
+  // background-size: auto;
+  background-position: 90% 100%;
+  background-size: 620px;
 }
