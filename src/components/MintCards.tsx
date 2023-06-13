@@ -6,9 +6,13 @@ import { errorToast, successToast } from "../services/toast-service";
 import { gasLimit } from "../config";
 import Loader from "react-spinners/HashLoader";
 
+const x = {
+  color: "white",
+  thickness: 1
+}
 const loader = (
   <div className="flex items-center justify-center w-full">
-    <Loader color={"white"} />
+    <Loader size={"30"} color={"white"} />
   </div>
 );
 
