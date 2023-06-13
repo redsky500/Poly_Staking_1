@@ -1,18 +1,22 @@
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;  
-  background-image: url("https://w0.peakpx.com/wallpaper/180/292/HD-wallpaper-lion-black-light-lightning.jpg");
-  background-repeat: no-repeat;
-  background-position: 0 -150px;
-  background-size: cover;
+  -moz-osx-font-smoothing: grayscale;
+  // background-image: url("https://w0.peakpx.com/wallpaper/180/292/HD-wallpaper-lion-black-light-lightning.jpg");
+  // background-repeat: no-repeat;
+  // background-position: 0 -150px;
+  // background-size: cover;
   font-family: "Inter";
-  // height: 100vh;
+  background-color: black;
 }
 
 * {
   margin: 0;
   padding: 0;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @layer base {
@@ -44,4 +48,9 @@ body {
 }
 #__next {
   height: 89%;
+
+  background-image: url("../../public/img/poly-stake-image.png");
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  background-size: auto;
 }
