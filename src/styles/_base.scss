@@ -39,6 +39,15 @@ body {
   font-weight: bold;
 }
 
+@font-face {
+  font-family: "Pumpshot";
+  src: url("/font/Pumpshot.woff2") format("woff2"),
+    url("/font/Pumpshot.otf") format("opentype");
+  font-style: normal;
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+}
+
 .regularfont {
   font-family: "light" !important;
 }
@@ -46,13 +55,19 @@ body {
 .sitefont {
   font-family: "FreakyStory" !important;
 }
+
+.pumpshot-font {
+  font-family: "pumpshot" !important;
+}
+
 #__next {
   height: 89%;
-
   background-image: url("../../public/img/poly-stake-image.png");
   background-repeat: no-repeat;
-  // background-position: 100% 100%;
-  // background-size: auto;
   background-position: 90% 100%;
   background-size: 620px;
+
+  @media screen and (max-width: 668px) {
+    background-size: calc(100% / 1);
+  }
 }

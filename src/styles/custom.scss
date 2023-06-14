@@ -60,3 +60,27 @@
   position: relative;
   margin-bottom: 16px;
 }
+
+.dashboard-content-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  transform: translate(-80%, -50%);
+  color: white;
+  width: 500px;
+  @media screen and (max-width: 668px) {
+    top: 50%;
+    left: 30%;
+  }
+  .meta-wolf-wrapper {
+    font-family: "pumpshot" !important;
+    font-size: 100px;
+    line-height: 88px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+  }
+  .wolf-para {
+    line-height: 23px;
+    font-size: 18px;
+  }
+}

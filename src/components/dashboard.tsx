@@ -80,9 +80,21 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
           <div className="max-w-[1440px] xl:flex flex-col p-10 m-auto mt-0 min-h-[]">
             <div className="flex flex-wrap justify-center items-center xl:w-full gap-[20px] px-[16px]">
               {!userNFTs.length && (
-                <span className="text-white">
-                  There is not any NFTs in your Account
-                </span>
+                <div className="dashboard-content-wrapper">
+                  <div className="meta-wolf-wrapper">
+                    <span>Metaland</span>
+                    <br />
+                    <span>Wolfpack</span>
+                  </div>
+                  <div className="mt-5">
+                    <p className="wolf-para">
+                      Welcome to Metaland Wolfpacks staking platform powered by
+                      Juice Vendor Labs. Connect your wallet and stake your MWP
+                      NFTs for $Silver. $Silver can be used for various
+                      ecosystem benefits!
+                    </p>
+                  </div>
+                </div>
               )}
               {paginationNFT.map((mint: any) => (
                 <MintCards
@@ -92,7 +104,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                 />
               ))}
             </div>
-            <div>
+            {/* <div> */}
               {userNFTs.length > 0 && (
                 <div className="px-2 py-4 w-[250px] m-auto">
                   <button
@@ -103,7 +115,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                   </button>
                 </div>
               )}
-            </div>
+            {/* </div> */}
           </div>
         </div>
       )}
