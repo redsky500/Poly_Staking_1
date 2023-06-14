@@ -18,19 +18,16 @@ export default function Header() {
 
   return (
     <header className="w-full h-[90px]">
-      <div className="bg-[#0003] w-full z-[9999] fixed flex justify-center xs:justify-between items-center px-8 sm:px-16 xl:px-32 py-4">
+      <div className="bg-[#0003] w-full z-[9999] fixed flex justify-between items-center px-8 sm:px-16 xl:px-32 py-4">
         <div className="text-white">
           <h1 className="font-medium text-xl">
             <Link href="/">STAKING</Link>
           </h1>
         </div>
         <div className="flex items-center gap-[20px] text-white">
-          <div className="font-medium text-xl">
+          <div className="font-medium text-xl xs:block hidden">
             <Link href="/">Dashboard</Link>
           </div>
-          {/* <div className="font-medium text-xl">
-            <Link href="/prizeList">Draw Result</Link>
-          </div> */}
           {isOwner && (
             <div className="font-medium text-xl">
               <Link href="/AdminPanel">Admin Panel</Link>
