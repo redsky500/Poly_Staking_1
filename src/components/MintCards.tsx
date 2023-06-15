@@ -4,17 +4,7 @@ import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { errorToast, successToast } from "../services/toast-service";
 import { gasLimit } from "../config";
-import Loader from "react-spinners/HashLoader";
-
-const x = {
-  color: "white",
-  thickness: 1,
-};
-const loader = (
-  <div className="flex items-center justify-center w-full">
-    <Loader size={"30"} color={"white"} />
-  </div>
-);
+import CustomButton from "./CustomButton";
 
 const MintCards = ({ userNFT, LOTTERYContract }: any) => {
   const { address: account } = useAccount();
@@ -79,12 +69,17 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
           })
           .catch((err: any) => {
             errorToast("transaction failed!");
+            setIsProcessing(false);
           });
       })
       .catch((err: any) => {
         setIsProcessing(false);
         errorToast("Unstake NFT went wrong!");
       });
+  };
+
+  const handleClickEvent = () => {
+    !isStake ? handleStake() : handleUnstake()
   };
 
   return (
@@ -100,13 +95,11 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
         alt={userNFT?.image}
       />
       <div className="px-2 py-4">
-        <button
-          className="disabled:cursor-default disabled:opacity-75 disabled:hover:bg-gray-800 bg-gray-800 hover:bg-themeColorRight text-white font-hairline py-2 px-4 rounded w-full cursor-pointer"
-          onClick={() => (!isStake ? handleStake() : handleUnstake())}
-          disabled={isProcessing}
-        >
-          {isProcessing ? loader : isStake ? "Unstake NFT" : "Stake NFT"}
-        </button>
+        <CustomButton
+          handleClickEvent={handleClickEvent}
+          isProcessing={isProcessing}
+          text={isStake ? "Unstake NFT" : "Stake NFT"}
+        />
       </div>
     </div>
   );
