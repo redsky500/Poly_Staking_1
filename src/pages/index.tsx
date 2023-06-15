@@ -20,7 +20,7 @@ const Home: NextPage = () => {
   );
   const config = {
     apiKey: "hz0eALWx9lEGcKZ2qU3xMcHK3GfqTk0U",
-    network: Network.ETH_GOERLI,
+    network: Network.MATIC_MAINNET,
   };
   const alchemy = new Alchemy(config);
 
