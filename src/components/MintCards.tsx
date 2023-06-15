@@ -26,7 +26,6 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
   };
 
   const handleStake = async () => {
-    debugger
     setIsProcessing(true);
     const contractFee = await LOTTERYContract.fee();
     LOTTERYContract.stake(userNFT.tokenId, {
@@ -55,7 +54,6 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
   };
 
   const handleUnstake = () => {
-    debugger;
     setIsProcessing(true);
     LOTTERYContract.unstake(userNFT.tokenId, {
       gasLimit,
