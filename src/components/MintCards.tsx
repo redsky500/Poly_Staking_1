@@ -8,8 +8,8 @@ import Loader from "react-spinners/HashLoader";
 
 const x = {
   color: "white",
-  thickness: 1
-}
+  thickness: 1,
+};
 const loader = (
   <div className="flex items-center justify-center w-full">
     <Loader size={"30"} color={"white"} />
@@ -54,6 +54,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
           })
           .catch((err: any) => {
             errorToast("transaction failed!");
+            setIsProcessing(false);
           });
       })
       .catch((err: any) => {
