@@ -60,3 +60,36 @@
   position: relative;
   margin-bottom: 16px;
 }
+
+.dashboard-content-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  transform: translate(calc(-80% - -5rem), -50%);
+  color: white;
+  max-width: 500px;
+  @media screen and (max-width: 1024px) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .meta-wolf-wrapper {
+    font-family: "pumpshot" !important;
+    font-size: 100px;
+    line-height: 88px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    @media screen and (max-width: 400px) {
+      font-size: 70px;
+      line-height: 60px;
+    }
+  }
+  .wolf-para {
+    line-height: 23px;
+    font-size: 18px;
+
+    @media screen and (max-width: 400px) {
+      font-size: 14px;
+    }
+  }
+}
