@@ -6,6 +6,8 @@ import {
   successToast,
   defaultToast,
 } from "../services/toast-service";
+import CustomButton from "../components/CustomButton";
+
 const BigNumber = require("bignumber.js");
 
 const AdminPanel: NextPage = ({ LOTTERYContract }: any) => {
@@ -27,15 +29,23 @@ const AdminPanel: NextPage = ({ LOTTERYContract }: any) => {
     LOTTERYContract.setFee(feesWeiToWei, {
       gasLimit,
       nonce: undefined,
-    }).then((res: any) => {
-      res
-        .wait()
-        .then(() => {
-          successToast("The transaction is completed");
-        })
-        .catch((err: any) => errorToast("set fee went wrong!"));
-      setIsFeeProcess(false);
-    });
+    })
+      .then((res: any) => {
+        res
+          .wait()
+          .then(() => {
+            successToast("The transaction is completed");
+            setIsFeeProcess(false);
+          })
+          .catch((err: any) => {
+            errorToast("set fee went wrong!");
+            setIsFeeProcess(false);
+          });
+      })
+      .catch((err: any) => {
+        errorToast("set fee went wrong!");
+        setIsFeeProcess(false);
+      });
   };
 
   const handlePrize = () => {
@@ -43,19 +53,26 @@ const AdminPanel: NextPage = ({ LOTTERYContract }: any) => {
       return defaultToast("Please set Fees");
     }
     setIsRewardProcess(true);
-    // Prize Converter
     const prizeValue: any = new BigNumber(`${prize}`);
     const prizeWei: any = prizeValue.times(ethInWei);
     const prizeWeiToWei = prizeWei.toString();
-    LOTTERYContract.setReward(prizeWeiToWei).then((res: any) => {
-      res
-        .wait()
-        .then(() => {
-          successToast("The transaction is completed");
-        })
-        .catch((err: any) => errorToast("set reward went wrong!"));
-      setIsRewardProcess(false);
-    });
+    LOTTERYContract.setReward(prizeWeiToWei)
+      .then((res: any) => {
+        res
+          .wait()
+          .then(() => {
+            successToast("The transaction is completed");
+            setIsRewardProcess(false);
+          })
+          .catch((err: any) => {
+            setIsRewardProcess(false);
+            errorToast("set reward went wrong!");
+          });
+      })
+      .catch((err: any) => {
+        setIsRewardProcess(false);
+        errorToast("set reward went wrong!");
+      });
   };
 
   return (
@@ -79,20 +96,18 @@ const AdminPanel: NextPage = ({ LOTTERYContract }: any) => {
                 required
               ></input>
             </div>
-            <button
-              className="bg-gray-800 hover:bg-themeColorRight text-white font-hairline py-2 px-4 rounded w-full"
-              onClick={() => handleFees()}
-              disabled={isFeeProcess}
-            >
-              Set Fee
-            </button>
+            <CustomButton
+              handleClickEvent={handleFees}
+              isProcessing={isFeeProcess}
+              text={"Set Fee"}
+            />
           </div>
 
           <div className="wrapper w-[500] mt-[50px]">
             <div>
               <p className="m-0 text-white font-Rubik">Set Reward</p>
             </div>
-            <div className="grid gap-[10px] items-center grid-cols-1">
+            <div className="grid gap-[10px] mb-[20px] items-center grid-cols-1">
               <input
                 type="text"
                 id="prize"
@@ -102,13 +117,11 @@ const AdminPanel: NextPage = ({ LOTTERYContract }: any) => {
                 required
               ></input>
             </div>
-            <button
-              className="bg-gray-800 hover:bg-themeColorRight text-white font-hairline py-2 px-4 rounded w-full mt-[20px]"
-              onClick={() => handlePrize()}
-              disabled={isRewardProcess}
-            >
-              Set Reward
-            </button>
+            <CustomButton
+              handleClickEvent={handlePrize}
+              isProcessing={isRewardProcess}
+              text={"Set Reward"}
+            />
           </div>
         </div>
       </div>

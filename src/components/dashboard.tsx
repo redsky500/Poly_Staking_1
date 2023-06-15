@@ -113,7 +113,6 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                 />
               ))}
             </div>
-            {/* <div> */}
             {userNFTs.length > 0 && (
               <div className="px-2 py-4 w-[250px] m-auto">
                 <button
@@ -124,7 +123,6 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                 </button>
               </div>
             )}
-            {/* </div> */}
           </div>
         </div>
       )}
