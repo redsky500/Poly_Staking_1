@@ -19,7 +19,7 @@ const Home: NextPage = () => {
     Signer
   );
   const config = {
-    apiKey: "hz0eALWx9lEGcKZ2qU3xMcHK3GfqTk0U",
+    apiKey: "6Pt6yOldmFaJl7NqLNy05JPUegbk7Vr3",
     network: Network.MATIC_MAINNET,
   };
   const alchemy = new Alchemy(config);
