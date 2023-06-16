@@ -53,10 +53,10 @@ const AdminPanel: NextPage = ({ LOTTERYContract }: any) => {
       return defaultToast("Please set Fees");
     }
     setIsRewardProcess(true);
-    const prizeValue: any = new BigNumber(`${prize}`);
-    const prizeWei: any = prizeValue.times(ethInWei);
-    const prizeWeiToWei = prizeWei.toString();
-    LOTTERYContract.setReward(prizeWeiToWei)
+    // const prizeValue: any = new BigNumber(`${prize}`);
+    // const prizeWei: any = prizeValue.times(ethInWei);
+    // const prizeWeiToWei = prizeWei.toString();
+    LOTTERYContract.setReward(prize)
       .then((res: any) => {
         res
           .wait()
