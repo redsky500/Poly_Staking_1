@@ -56,7 +56,10 @@ const AdminPanel: NextPage = ({ LOTTERYContract }: any) => {
     const prizeValue: any = new BigNumber(`${prize}`);
     const prizeWei: any = prizeValue.times(ethInWei);
     const prizeWeiToWei = prizeWei.toString();
-    LOTTERYContract.setReward(prizeWeiToWei)
+    LOTTERYContract.setReward(prizeWeiToWei, {
+      gasLimit,
+      nonce: undefined,
+    })
       .then((res: any) => {
         res
           .wait()
