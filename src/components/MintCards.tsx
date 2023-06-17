@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import { errorToast, successToast } from "../services/toast-service";
 import { gasLimit } from "../config";
 import CustomButton from "./CustomButton";
+const BigNumber = require("bignumber.js");
 
 const MintCards = ({ userNFT, LOTTERYContract }: any) => {
   const { address: account } = useAccount();
@@ -33,7 +34,10 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
     setIsStake(isStake);
     if (isStake) {
       const currentReward = await LOTTERYContract.rewardAmount(userNFT.tokenId);
-      setReward(currentReward.toString());
+      const etherValue = new BigNumber(currentReward.toString())
+        .dividedBy(new BigNumber("1e18"))
+        .toString();
+      setReward(Number(etherValue).toFixed(3));
     } else {
       setReward("Not staked");
     }
@@ -55,6 +59,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
             successToast("Stake NFT successfully!");
             setIsStake(true);
             setIsProcessing(false);
+            setReward("0.000");
           })
           .catch((err: any) => {
             errorToast("transaction failed!");
@@ -80,6 +85,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
             successToast("Unstake NFT successfully!");
             setIsStake(false);
             setIsProcessing(false);
+            setReward("Not staked");
           })
           .catch((err: any) => {
             errorToast("transaction failed!");
