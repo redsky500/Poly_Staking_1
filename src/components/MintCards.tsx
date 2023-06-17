@@ -9,6 +9,7 @@ import CustomButton from "./CustomButton";
 const MintCards = ({ userNFT, LOTTERYContract }: any) => {
   const { address: account } = useAccount();
   const [isStake, setIsStake] = useState<any>(null);
+  const [reward, setReward] = useState<any>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
@@ -20,9 +21,22 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setIsStake, account]);
 
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      initialSyncFunc();
+    }, 30 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const initialSyncFunc = async () => {
     const isStake = await LOTTERYContract.readStake(userNFT.tokenId);
     setIsStake(isStake);
+    if (isStake) {
+      const currentReward = await LOTTERYContract.rewardAmount(userNFT.tokenId);
+      setReward(currentReward.toString());
+    } else {
+      setReward("Not staked");
+    }
   };
 
   const handleStake = async () => {
@@ -79,7 +93,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
   };
 
   const handleClickEvent = () => {
-    !isStake ? handleStake() : handleUnstake()
+    !isStake ? handleStake() : handleUnstake();
   };
 
   return (
@@ -87,6 +101,9 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
       <div className="flex items-center justify-between mb-2 mt-2">
         <span className="inline-block bg-gray-800 px-3 py-1 mb-2 font-hairline text-white text-xs">
           # {userNFT?.tokenId}
+        </span>
+        <span className="ellipse-para inline-block bg-gray-800 px-3 py-1 mb-2 font-hairline text-white text-xs">
+          Reward: {reward}
         </span>
       </div>
       <img
