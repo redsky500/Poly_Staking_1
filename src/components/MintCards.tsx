@@ -7,7 +7,7 @@ import { gasLimit } from "../config";
 import CustomButton from "./CustomButton";
 const BigNumber = require("bignumber.js");
 
-const MintCards = ({ userNFT, LOTTERYContract }: any) => {
+const MintCards = ({ userNFT, LOTTERYContract, initialSyncFunction }: any) => {
   const { address: account } = useAccount();
   const [isStake, setIsStake] = useState<any>(null);
   const [reward, setReward] = useState<any>(null);
@@ -46,7 +46,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
   const handleStake = async () => {
     setIsProcessing(true);
     const contractFee = await LOTTERYContract.fee();
-    LOTTERYContract.stake(userNFT.tokenId, {
+    LOTTERYContract.stake([userNFT.tokenId], {
       from: account,
       value: contractFee.toString(),
       gasLimit,
@@ -60,6 +60,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
             setIsStake(true);
             setIsProcessing(false);
             setReward("0.000");
+            initialSyncFunction();
           })
           .catch((err: any) => {
             errorToast("transaction failed!");
@@ -74,7 +75,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
 
   const handleUnstake = () => {
     setIsProcessing(true);
-    LOTTERYContract.unstake(userNFT.tokenId, {
+    LOTTERYContract.unstake([userNFT.tokenId], {
       gasLimit,
       nonce: undefined,
     })
@@ -86,6 +87,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
             setIsStake(false);
             setIsProcessing(false);
             setReward("Not staked");
+            initialSyncFunction();
           })
           .catch((err: any) => {
             errorToast("transaction failed!");

@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
+import CustomButton from "./CustomButton";
 import Loader from "react-spinners/HashLoader";
 
 const loader = (
@@ -9,7 +10,13 @@ const loader = (
   </div>
 );
 
-const Tab = ({ NFTCards, moreButton, handleTabs }: any) => {
+const Tab = ({
+  NFTCards,
+  moreButton,
+  handleTabs,
+  handleStakeAll,
+  handleUnstakeAll,
+}: any) => {
   const [currentTab, setCurrentTab] = useState("tab-1");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -58,14 +65,15 @@ const Tab = ({ NFTCards, moreButton, handleTabs }: any) => {
         loader
       ) : (
         <div className="bg-[#0000005c] p-8 text-gray-700 rounded-lg -mt-[1px]">
-          {!NFTCards.length ? (
+          {!NFTCards?.length ? (
             <div>No NFTs</div>
           ) : (
             <>
+              {currentTab == "tab-1" ? handleStakeAll : handleUnstakeAll}
               <div className="flex flex-wrap gap-[20px] justify-center">
                 {NFTCards}
               </div>
-              <div>{moreButton}</div>
+              <div className="px-2 py-4 w-[250px] m-auto">{moreButton}</div>
             </>
           )}
         </div>
