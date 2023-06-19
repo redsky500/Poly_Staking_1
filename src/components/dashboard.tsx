@@ -6,6 +6,7 @@ import Loader from "react-spinners/HashLoader";
 import Tab from "./tab";
 import CustomButton from "./CustomButton";
 import { gasLimit } from "../config";
+const BigNumber = require("bignumber.js");
 
 const loader = (
   <div className="flex items-center justify-center w-full">
@@ -23,6 +24,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isButtonProcessing, setIsButtonProcessing] = useState(false);
   const [paginationNFT, setMintCards] = useState([]);
+  const [reward, setReward] = useState<any>(null);
 
   useEffect(() => {
     if (!account) {
@@ -32,6 +34,13 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      getRewardPrize();
+    }, 30 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const initialSyncFunction = async () => {
     setPageLoad(true);
@@ -86,14 +95,33 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
     }
   };
 
-  const handleTabs = (CurrentTab: string, allNFTs: any = []) => {
+  const handleTabs = async (currentTab: string, allNFTs: any = []) => {
     const userAllNFTs = allNFTs?.length ? allNFTs : userNFTs;
     const handledNFTs = userAllNFTs.filter((item: any) => {
-      return CurrentTab == "tab-1" ? !item.isStaked : item.isStaked;
+      return currentTab == "tab-1" ? !item.isStaked : item.isStaked;
     });
     updatePagination(handledNFTs);
     setPageLoad(false);
     setIsLoggedIn(true);
+    if (currentTab == "tab-2") {
+      getRewardPrize();
+    }
+  };
+
+  const getRewardPrize = async () => {
+    const allRewardNFTPrize = userNFTs
+      .filter((item: any) => item.isStaked)
+      .map((item: any) => item.tokenId);
+    if (allRewardNFTPrize) {
+      const currentReward = await LOTTERYContract.rewardAmount(
+        allRewardNFTPrize
+      );
+      const etherValue = new BigNumber(currentReward.toString())
+        .dividedBy(new BigNumber("1e18"))
+        .toString();
+
+      setReward(Number(etherValue).toFixed(3));
+    }
   };
 
   const handleStakeAll = async () => {
@@ -107,7 +135,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
 
     LOTTERYContract.stake(allStakeNFT, {
       from: account,
-      value: amount,
+      value: amount.toString(),
       gasLimit,
       nonce: undefined,
     })
@@ -210,12 +238,22 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                     </div>
                   }
                   handleUnstakeAll={
-                    <div className="w-[150px] mx-auto mb-[25px]">
-                      <CustomButton
-                        handleClickEvent={handleUnstakeAll}
-                        isProcessing={isButtonProcessing}
-                        text={"Unstake All"}
-                      />
+                    <div className="w-full lg:justify-between flex justify-center items-center flex-wrap gap-[30px] mb-[25px]">
+                      <div className="w-[250px]">
+                        <CustomButton
+                          handleClickEvent={handleUnstakeAll}
+                          isProcessing={isButtonProcessing}
+                          text={"Unstake All"}
+                        />
+                      </div>
+                      <div className="w-[150px] text-white">{reward}</div>
+                      <div className="w-[250px]">
+                        <CustomButton
+                          handleClickEvent={handleUnstakeAll}
+                          isProcessing={isButtonProcessing}
+                          text={"Claim All"}
+                        />
+                      </div>
                     </div>
                   }
                 />
