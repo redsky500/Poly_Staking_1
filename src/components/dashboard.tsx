@@ -248,14 +248,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                           text={"Unstake All"}
                         />
                       </div>
-                      <div className="w-[150px] text-white">{reward}</div>
-                      <div className="w-[250px]">
-                        <CustomButton
-                          handleClickEvent={handleUnstakeAll}
-                          isProcessing={isButtonProcessing}
-                          text={"Claim All"}
-                        />
-                      </div>
+                      <div className="w-[150px] text-white">Reward: {reward}</div>
                     </div>
                   }
                 />
