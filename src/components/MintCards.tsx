@@ -27,7 +27,10 @@ const MintCards = ({ userNFT, LOTTERYContract, initialSyncFunction }: any) => {
     setIsStake(isStake);
     if (isStake) {
       const contractReward = await LOTTERYContract.reward();
-      const currentReward = contractReward.toString() / 24;
+      const etherValue = new BigNumber(contractReward.toString())
+        .dividedBy(new BigNumber("1e18"))
+        .toString();
+      const currentReward = etherValue / 24;
       setReward(Number(currentReward).toFixed(3));
     } else {
       setReward("Not staked");
