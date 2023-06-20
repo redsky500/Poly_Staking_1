@@ -22,7 +22,9 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
   const [userNFTs, setUserNFTs] = useState([]);
   const [pageLoad, setPageLoad] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isButtonProcessing, setIsButtonProcessing] = useState(false);
+  const [isMoreButtonProcessing, setIsMoreButtonProcessing] = useState(false);
+  const [isStakeAllProcessing, setIsStakeAllProcessing] = useState(false);
+  const [isUnstakeAllProcessing, setIsUnstakeAllProcessing] = useState(false);
   const [paginationNFT, setMintCards] = useState([]);
   const [reward, setReward] = useState<any>(null);
 
@@ -88,6 +90,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
   };
 
   const handleNFTPagination = () => {
+    setIsMoreButtonProcessing(true);
     const totalPages = Math.ceil(userNFTs.length / itemsPerPage);
     if (currentPage < totalPages) {
       currentPage++;
@@ -95,6 +98,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
     } else {
       errorToast(`You have total ${userNFTs.length} NFTs`);
     }
+    setIsMoreButtonProcessing(false);
   };
 
   const handleTabs = async (currentTab: string, allNFTs: any = []) => {
@@ -127,7 +131,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
   };
 
   const handleStakeAll = async () => {
-    setIsButtonProcessing(true);
+    setIsStakeAllProcessing(true);
     const allStakeNFT = userNFTs
       .filter((item: any) => !item.isStaked)
       .map((item: any) => item.tokenId);
@@ -146,21 +150,21 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
           .wait()
           .then(() => {
             initialSyncFunction();
-            setIsButtonProcessing(false);
+            setIsStakeAllProcessing(false);
           })
           .catch(() => {
             errorToast("transaction failed!");
-            setIsButtonProcessing(false);
+            setIsStakeAllProcessing(false);
           });
       })
       .catch(() => {
         errorToast("Stake contract went wrong!");
-        setIsButtonProcessing(false);
+        setIsStakeAllProcessing(false);
       });
   };
 
   const handleUnstakeAll = () => {
-    setIsButtonProcessing(true);
+    setIsUnstakeAllProcessing(true);
     const allStakeNFT = userNFTs
       .filter((item: any) => item.isStaked)
       .map((item: any) => item.tokenId);
@@ -174,14 +178,14 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
           .wait()
           .then(() => {
             initialSyncFunction();
-            setIsButtonProcessing(false);
+            setIsUnstakeAllProcessing(false);
           })
           .catch(() => {
-            setIsButtonProcessing(false);
+            setIsUnstakeAllProcessing(false);
           });
       })
       .catch(() => {
-        setIsButtonProcessing(false);
+        setIsUnstakeAllProcessing(false);
       });
   };
 
@@ -224,7 +228,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                     userNFTs.length > 0 && (
                       <CustomButton
                         handleClickEvent={handleNFTPagination}
-                        isProcessing={isButtonProcessing}
+                        isProcessing={isMoreButtonProcessing}
                         text={"More"}
                       />
                     )
@@ -234,7 +238,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                     <div className="w-[150px] mx-auto mb-[25px]">
                       <CustomButton
                         handleClickEvent={handleStakeAll}
-                        isProcessing={isButtonProcessing}
+                        isProcessing={isStakeAllProcessing}
                         text={"Stake All"}
                       />
                     </div>
@@ -244,11 +248,13 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                       <div className="w-[250px]">
                         <CustomButton
                           handleClickEvent={handleUnstakeAll}
-                          isProcessing={isButtonProcessing}
+                          isProcessing={isUnstakeAllProcessing}
                           text={"Unstake All"}
                         />
                       </div>
-                      <div className="w-[150px] text-white">Reward: {reward}</div>
+                      <div className="w-[150px] text-white">
+                        Reward: {reward}
+                      </div>
                     </div>
                   }
                 />
