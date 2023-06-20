@@ -3,7 +3,7 @@ import { Web3ReactProvider } from "@web3-react/core";
 import { ethers } from "ethers";
 import { motion } from "framer-motion";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { configureChains, createClient, WagmiConfig, useAccount } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { LOTTERY_CONTRACTADDRESS } from "../config";
@@ -23,12 +23,15 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import "../styles/style.scss";
 import "@rainbow-me/rainbowkit/styles.css";
+import classnames from "classnames";
+import { useEffect } from "react";
 
 const appProvider =
   typeof window !== "undefined" && window?.ethereum
     ? new ethers.providers.Web3Provider(window.ethereum)
     : null;
 
+let className = classnames("wolf-image");
 function StakingApp({ Component, pageProps }) {
   const { chains, provider } = configureChains(
     [
@@ -57,19 +60,26 @@ function StakingApp({ Component, pageProps }) {
     connectors,
     provider,
   });
-
   const Signer = appProvider?.getSigner();
   const LOTTERYContract = new ethers.Contract(
     LOTTERY_CONTRACTADDRESS,
     LOTTERYABI,
     Signer
   );
+  const { address: account } = useAccount();
+
+  useEffect(() => {
+    if (account) {
+      className = classnames("wolf-gone");
+    }
+  }, [account]);
 
   return (
     <motion.section
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ ease: "easeInOut", duration: 0.9, delay: 0.2 }}
+      className={className}
     >
       <Web3ReactProvider>
         <WagmiConfig client={wagmiClient}>

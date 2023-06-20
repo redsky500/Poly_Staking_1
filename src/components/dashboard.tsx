@@ -28,9 +28,11 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
 
   useEffect(() => {
     if (!account) {
+      setIsLoggedIn(false);
       return;
+    } else {
+      initialSyncFunction();
     }
-    initialSyncFunction();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
