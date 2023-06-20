@@ -7,7 +7,7 @@ import { gasLimit } from "../config";
 import CustomButton from "./CustomButton";
 const BigNumber = require("bignumber.js");
 
-const MintCards = ({ userNFT, LOTTERYContract }: any) => {
+const MintCards = ({ userNFT, LOTTERYContract, initialSyncFunction }: any) => {
   const { address: account } = useAccount();
   const [isStake, setIsStake] = useState<any>(null);
   const [reward, setReward] = useState<any>(null);
@@ -22,22 +22,16 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setIsStake, account]);
 
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      initialSyncFunc();
-    }, 30 * 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
-
   const initialSyncFunc = async () => {
     const isStake = await LOTTERYContract.readStake(userNFT.tokenId);
     setIsStake(isStake);
     if (isStake) {
-      const currentReward = await LOTTERYContract.rewardAmount(userNFT.tokenId);
+      const contractFee = await LOTTERYContract.fee();
+      const currentReward = contractFee.toString() / 24;
       const etherValue = new BigNumber(currentReward.toString())
         .dividedBy(new BigNumber("1e18"))
         .toString();
-      setReward(Number(etherValue).toFixed(3));
+      setReward(Number(etherValue).toFixed(5));
     } else {
       setReward("Not staked");
     }
@@ -46,7 +40,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
   const handleStake = async () => {
     setIsProcessing(true);
     const contractFee = await LOTTERYContract.fee();
-    LOTTERYContract.stake(userNFT.tokenId, {
+    LOTTERYContract.stake([userNFT.tokenId], {
       from: account,
       value: contractFee.toString(),
       gasLimit,
@@ -60,6 +54,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
             setIsStake(true);
             setIsProcessing(false);
             setReward("0.000");
+            initialSyncFunction();
           })
           .catch((err: any) => {
             errorToast("transaction failed!");
@@ -74,7 +69,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
 
   const handleUnstake = () => {
     setIsProcessing(true);
-    LOTTERYContract.unstake(userNFT.tokenId, {
+    LOTTERYContract.unstake([userNFT.tokenId], {
       gasLimit,
       nonce: undefined,
     })
@@ -86,6 +81,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
             setIsStake(false);
             setIsProcessing(false);
             setReward("Not staked");
+            initialSyncFunction();
           })
           .catch((err: any) => {
             errorToast("transaction failed!");
@@ -109,7 +105,7 @@ const MintCards = ({ userNFT, LOTTERYContract }: any) => {
           # {userNFT?.tokenId}
         </span>
         <span className="ellipse-para inline-block bg-gray-800 px-3 py-1 mb-2 font-hairline text-white text-xs">
-          Reward: {reward}
+          Hourly: {reward}
         </span>
       </div>
       <img
