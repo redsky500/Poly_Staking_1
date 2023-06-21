@@ -234,11 +234,11 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
         loader
       ) : (
         <div className="w-full h-full overflow-auto px-4 sm:px-16 py-8 font-inter text-center text-[20px]">
-          <div className="max-w-[1440px] xl:flex flex-col p-10 m-auto mt-0 min-h-full">
+          <div className="max-w-[1440px] xl:flex flex-col sm:p-10 p-0 m-auto mt-0 min-h-full">
             <div className="flex flex-wrap justify-center items-center xl:w-full gap-[20px] px-[16px]">
               {!isLoggedIn && (
                 <div className="dashboard-content-wrapper">
-                  <div className="meta-wolf-wrapper">
+                  <div className="meta-wolf-wrapper text-left">
                     <span>Metaland</span>
                     <br />
                     <span>Wolfpack</span>
