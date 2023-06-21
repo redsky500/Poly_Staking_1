@@ -238,7 +238,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
             <div className="flex flex-wrap justify-center items-center xl:w-full gap-[20px] px-[16px]">
               {!isLoggedIn && (
                 <div className="dashboard-content-wrapper">
-                  <div className="meta-wolf-wrapper">
+                  <div className="meta-wolf-wrapper text-left">
                     <span>Metaland</span>
                     <br />
                     <span>Wolfpack</span>
