@@ -30,7 +30,7 @@ const Tab = ({
   };
 
   return (
-    <div className="p-8 w-full text-white text-center my-[20px] mx-auto box-content p-4 border-4 border-teal-400 bg-[#0000005c] rounded-[15px]">
+    <div className="sm:p-8 p-4 w-full min-w-[270px] text-white text-center my-[20px] mx-auto box-content p-4 border-4 border-teal-400 bg-[#0000005c] rounded-[15px]">
       <ul className="grid grid-flow-col text-center text-gray-500">
         <li className="cursor-pointer">
           <a
@@ -73,7 +73,7 @@ const Tab = ({
               <div className="flex flex-wrap gap-[20px] justify-center">
                 {NFTCards}
               </div>
-              <div className="px-2 py-4 w-[250px] m-auto">{moreButton}</div>
+              <div className="px-2 py-4 max-w-[250px] w-full m-auto">{moreButton}</div>
             </>
           )}
         </div>
