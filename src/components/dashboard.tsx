@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useAccount } from "wagmi";
 import MintCards from "./MintCards";
-import { errorToast } from "../services/toast-service";
+import { errorToast, successToast } from "../services/toast-service";
 import Loader from "react-spinners/HashLoader";
 import Tab from "./tab";
 import CustomButton from "./CustomButton";
@@ -25,6 +25,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
   const [isMoreButtonProcessing, setIsMoreButtonProcessing] = useState(false);
   const [isStakeAllProcessing, setIsStakeAllProcessing] = useState(false);
   const [isUnstakeAllProcessing, setIsUnstakeAllProcessing] = useState(false);
+  const [isClaimAllProcessing, setIsClaimAllProcessing] = useState(false);
   const [paginationNFT, setMintCards] = useState([]);
   const [reward, setReward] = useState<any>(null);
 
@@ -179,13 +180,51 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
           .then(() => {
             initialSyncFunction();
             setIsUnstakeAllProcessing(false);
+            successToast("Unstaked All successfully");
           })
           .catch(() => {
             setIsUnstakeAllProcessing(false);
+            errorToast(
+              "Something wrong with the transaction. Unstake All didn't transferred"
+            );
           });
       })
       .catch(() => {
         setIsUnstakeAllProcessing(false);
+        errorToast(
+          "Something wrong with the contract. Unstake All not working"
+        );
+      });
+  };
+
+  const handleClaimAll = () => {
+    setIsClaimAllProcessing(true);
+    const allStakeNFT = userNFTs
+      .filter((item: any) => item.isStaked)
+      .map((item: any) => item.tokenId);
+
+    LOTTERYContract.claimAll(allStakeNFT, {
+      gasLimit,
+      nonce: undefined,
+    })
+      .then((res: any) => {
+        res
+          .wait()
+          .then(() => {
+            initialSyncFunction();
+            setIsClaimAllProcessing(false);
+            successToast("Claim all successfully");
+          })
+          .catch(() => {
+            setIsClaimAllProcessing(false);
+            errorToast(
+              "Something wrong with the transaction. Claim All didn't transferred"
+            );
+          });
+      })
+      .catch(() => {
+        setIsClaimAllProcessing(false);
+        errorToast("Something wrong with the contract. Claim All not working");
       });
   };
 
@@ -205,7 +244,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                     <span>Wolfpack</span>
                   </div>
                   <div className="mt-5">
-                    <p className="wolf-para">
+                    <p className="wolf-para text-left">
                       Welcome to Metaland Wolfpacks staking platform powered by
                       Juice Vendor Labs. Connect your wallet and stake your MWP
                       NFTs for $WOLF. $WOLF can be used for various ecosystem
@@ -254,6 +293,13 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                       </div>
                       <div className="w-[150px] text-white">
                         Reward: {reward}
+                      </div>
+                      <div className="w-[250px]">
+                        <CustomButton
+                          handleClickEvent={handleClaimAll}
+                          isProcessing={isClaimAllProcessing}
+                          text={"Claim All"}
+                        />
                       </div>
                     </div>
                   }
