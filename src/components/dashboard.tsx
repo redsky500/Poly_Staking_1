@@ -90,6 +90,8 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
               setUserNFTs(convertedAllNFTs);
               handleTabs("tab-1", convertedAllNFTs);
             }
+          }).catch(() => {
+            errorToast("Something went wrong! Can you please reload the page!")
           })
           .finally(() => {
             setPageLoad(false);
