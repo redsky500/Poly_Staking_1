@@ -42,7 +42,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account,  setUserNFTs]);
+  }, [account, setUserNFTs]);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -62,19 +62,26 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
     if (matchedNFTs?.length) {
       matchedNFTs.map((item: any, index: number) => {
         const image = item?.rawMetadata?.image?.includes("ipfs://")
-          ? item?.rawMetadata?.image?.replace("ipfs://", "https://ipfs.io/ipfs/")
+          ? item?.rawMetadata?.image?.replace(
+              "ipfs://",
+              "https://ipfs.io/ipfs/"
+            )
           : item?.rawMetadata?.image;
-        LOTTERYContract.readStake(item.tokenId).then((isStaked: boolean) => {
-          convertedAllNFTs.push({
-            tokenId: item.tokenId,
-            image,
-            isStaked,
+        LOTTERYContract.readStake(Number(item.tokenId))
+          .then((isStaked: boolean) => {
+            convertedAllNFTs.push({
+              tokenId: item.tokenId,
+              image,
+              isStaked,
+            });
+            if (matchedNFTs.length - 1 == index) {
+              setUserNFTs(convertedAllNFTs);
+              handleTabs("tab-1", convertedAllNFTs);
+            }
+          })
+          .finally(() => {
+            setPageLoad(false);
           });
-          if (matchedNFTs.length - 1 == index) {
-            setUserNFTs(convertedAllNFTs);
-            handleTabs("tab-1", convertedAllNFTs);
-          }
-        });
       });
     } else {
       setPageLoad(false);
@@ -241,7 +248,9 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
       {pageLoad ? (
         loader
       ) : (
-        <div className={`${bgStyle} w-full h-full overflow-auto px-4 sm:px-16 py-8 font-inter text-center text-[20px]`}>
+        <div
+          className={`${bgStyle} w-full h-full overflow-auto px-4 sm:px-16 py-8 font-inter text-center text-[20px]`}
+        >
           <div className="max-w-[1440px] xl:flex flex-col sm:p-10 p-0 m-auto mt-0 min-h-full">
             <div className="flex flex-wrap justify-center items-center xl:w-full gap-[20px] px-[16px]">
               {!isLoggedIn && (
