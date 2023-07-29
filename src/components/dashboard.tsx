@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useLatestContract } from "../custom-hooks/update-provider";
 import { useAccount, useNetwork } from "wagmi";
 import MintCards from "./MintCards";
 import { errorToast, successToast } from "../services/toast-service";
@@ -6,6 +7,7 @@ import Loader from "react-spinners/HashLoader";
 import Tab from "./tab";
 import CustomButton from "./CustomButton";
 import { gasLimit } from "../config";
+import { alchemyConnect } from "../connecthook/connect";
 const BigNumber = require("bignumber.js");
 
 const loader = (
@@ -17,7 +19,7 @@ const itemsPerPage = 50;
 let currentPage = 1;
 const filterContract = "0xDa9e84CA5b437a88Ab2a5895720c929d32F44b67";
 
-const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
+const Dashboard = () => {
   const { address: account } = useAccount();
   const [userNFTs, setUserNFTs] = useState([]);
   const [pageLoad, setPageLoad] = useState(false);
@@ -29,13 +31,12 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
   const [paginationNFT, setMintCards] = useState([]);
   const [reward, setReward] = useState<any>(null);
   const [bgStyle, setBgStyle] = useState("");
-
   const { chain } = useNetwork();
-  const [currentNetwork, setCurrentNetwork] = useState("");
+  const { readStake, readAmount, fee, stake, unstake, claimAll } =
+    useLatestContract();
 
   useEffect(() => {
     const networkName = chain?.name;
-    setCurrentNetwork(networkName!);
     setBgStyle("wolf-image");
 
     if (!account) {
@@ -72,30 +73,23 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
     );
     const convertedAllNFTs: any = [];
     if (matchedNFTs?.length) {
-      matchedNFTs.map((item: any, index: number) => {
+      matchedNFTs.map(async (item: any, index: number) => {
         const image = item?.rawMetadata?.image?.includes("ipfs://")
           ? item?.rawMetadata?.image?.replace(
               "ipfs://",
               "https://ipfs.io/ipfs/"
             )
           : item?.rawMetadata?.image;
-        LOTTERYContract.readStake(Number(item.tokenId))
-          .then((isStaked: boolean) => {
-            convertedAllNFTs.push({
-              tokenId: item.tokenId,
-              image,
-              isStaked,
-            });
-            if (matchedNFTs.length - 1 == index) {
-              setUserNFTs(convertedAllNFTs);
-              handleTabs("tab-1", convertedAllNFTs);
-            }
-          }).catch(() => {
-            errorToast("Something went wrong! Can you please reload the page!")
-          })
-          .finally(() => {
-            setPageLoad(false);
-          });
+        const isStaked = await readStake(item.tokenId);
+        convertedAllNFTs.push({
+          tokenId: item.tokenId,
+          image,
+          isStaked,
+        });
+        if (matchedNFTs.length - 1 == index) {
+          setUserNFTs(convertedAllNFTs);
+          handleTabs("tab-1", convertedAllNFTs);
+        }
       });
     } else {
       setPageLoad(false);
@@ -103,7 +97,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
   };
 
   const filteredNFTs = useCallback(async (account: string) => {
-    const items = await alchemy.nft.getNftsForOwner(account);
+    const items = await alchemyConnect.nft.getNftsForOwner(account);
     return items;
   }, []);
 
@@ -149,9 +143,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
       .filter((item: any) => item.isStaked)
       .map((item: any) => item.tokenId);
     if (allRewardNFTPrize) {
-      const currentReward = await LOTTERYContract.rewardAmount(
-        allRewardNFTPrize
-      );
+      const currentReward = await readAmount(allRewardNFTPrize);
       const etherValue = new BigNumber(currentReward.toString())
         .dividedBy(new BigNumber("1e18"))
         .toString();
@@ -166,10 +158,10 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
       .filter((item: any) => !item.isStaked)
       .map((item: any) => item.tokenId);
 
-    const contractFee = await LOTTERYContract.fee();
+    const contractFee = await fee();
     const amount = allStakeNFT.length * contractFee.toString();
 
-    LOTTERYContract.stake(allStakeNFT, {
+    stake(allStakeNFT, {
       from: account,
       value: amount.toString(),
       gasLimit,
@@ -199,7 +191,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
       .filter((item: any) => item.isStaked)
       .map((item: any) => item.tokenId);
 
-    LOTTERYContract.unstake(allStakeNFT, {
+    unstake(allStakeNFT, {
       gasLimit,
       nonce: undefined,
     })
@@ -232,7 +224,7 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
       .filter((item: any) => item.isStaked)
       .map((item: any) => item.tokenId);
 
-    LOTTERYContract.claimAll(allStakeNFT, {
+    claimAll(allStakeNFT, {
       gasLimit,
       nonce: undefined,
     })
@@ -290,7 +282,6 @@ const Dashboard = ({ alchemy, LOTTERYContract }: any) => {
                     <MintCards
                       key={mint.tokenId}
                       userNFT={mint}
-                      LOTTERYContract={LOTTERYContract}
                       initialSyncFunction={initialSyncFunction}
                     />
                   ))}
