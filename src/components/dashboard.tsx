@@ -223,7 +223,6 @@ const Dashboard = () => {
     const allStakeNFT = userNFTs
       .filter((item: any) => item.isStaked)
       .map((item: any) => item.tokenId);
-
     claimAll(allStakeNFT, {
       gasLimit,
       nonce: undefined,
